@@ -67,7 +67,9 @@ An Example User:
     * It is helpful to learn if I am going to develop complicated web pages in the future
 
 
-## [Link to Initial Main Project File](src/app.js) 
+## [Link to Initial Main Project File](src/app.mjs) 
+* [db.mjs](src/db.mjs) for database schema
+* [config.mjs](src/config.mjs) for config
 
 ## Annotations / References Used
 
