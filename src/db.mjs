@@ -8,10 +8,16 @@ mongoose.connect(process.env.DSN);
 // define the data in our collection
 const UserData = new mongoose.Schema({
 	username: String,
-	salf: String,
+	salt: String,
 	password: String, // hash
-	files: Array
 });
 
 // "register" it so that mongoose knows about it
 mongoose.model('UserData', UserData);
+
+// each item stores a single file. filename is the full name (including path)
+mongoose.model('FileStruct', new mongoose.Schema({
+	username: String,
+	filename: String,
+	fileId: String
+}))
