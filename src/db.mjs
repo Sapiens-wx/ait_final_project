@@ -19,5 +19,6 @@ mongoose.model('UserData', UserData);
 mongoose.model('FileStruct', new mongoose.Schema({
 	username: String,
 	filename: String,
-	fileId: String
+	fileId: String,
+	parentId: String,
 }))

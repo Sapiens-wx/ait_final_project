@@ -20,13 +20,26 @@ function validateFileName(filename){
 	return err;
 }
 
-async function newFile(username, filename){
+async function newFile(username, filename, parentId){
 	const id=getId();
-	await FileStruct.create({username, filename, fileId: id});
+	await FileStruct.create({username, filename, fileId: id, parentId: parentId});
 }
 
 async function renameFile(username, fileId, newName){
 	await FileStruct.updateOne({username, fileId}, {$set: {filename: newName}});
+}
+
+async function deleteFile(username, fileId){
+	let children=FileStruct.find({parentId: fileId});
+	const deleteThis=FileStruct.deleteOne({username, fileId});
+	await deleteThis;
+	children=await children;
+	const childrenProcesses=children.reduce((acc, cur)=>{
+		acc.push(deleteFile(username, cur.fileId));
+		return acc;
+	}, [])
+	for(const child of childrenProcesses)
+		await child;
 }
 
 // ========= Server =========
@@ -63,17 +76,23 @@ app.post('/api/login', async function(req, res){
 	res.json(result);
 });
 
-// returns an array of FileStruct
-// {files: array of FileStruct}
+// returns: {files: array of FileStruct, username: the username}
 app.get('/api/home', async function(req, res){
 	let foundFiles=await FileStruct.find({username: req.session.username});
 	res.json({username: req.session.username, files: foundFiles});
 });
 
-// params: username, filename
+// params: username, filename, [parentId]
 // returns: none
 app.post('/api/newFile', async function(req, res){
-	await newFile(req.body.username, req.body.filename);
+	await newFile(req.body.username, req.body.filename, req.body.parentId);
+	res.send();
+});
+
+// params: username, fileId, filename
+// returns: none
+app.post('/api/deleteFile', async function(req, res){
+	await deleteFile(req.body.username, req.body.fileId);
 	res.send();
 });
 
