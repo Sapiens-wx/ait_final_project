@@ -1,7 +1,10 @@
 # npm run build
 cd src/client
+npm install
 npm run build
 cd ../..
+# install necessary packages
+npm install
 # insert code into src/app.mjs
 INSERT_CODE=$(cat <<'EOF'
 app.use(express.static(path.join(__dirname, "client/dist")));
