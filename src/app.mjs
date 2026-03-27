@@ -4,10 +4,12 @@ import './db.mjs';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import {getSalt, getHash, getId} from './hash_utils.mjs'
+import path from 'path';
 
 const PORT=3000;
 const UserData=mongoose.model('UserData');
 const FileStruct=mongoose.model('FileStruct');
+const __dirname = new URL('.', import.meta.url).pathname;
 
 function newUser(username, password){
 	const salt=getSalt();
@@ -45,6 +47,7 @@ async function deleteFile(username, fileId){
 // ========= Server =========
 
 const app = express();
+//#build
 
 const sessionOptions={
 	secret: 'some secrete',
@@ -103,5 +106,5 @@ app.post('/api/renameFile', async function(req, res){
 	res.send();
 });
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT??3000);
 console.log('listening on port', process.env.PORT);
