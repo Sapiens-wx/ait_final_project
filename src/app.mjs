@@ -4,12 +4,14 @@ import './db.mjs';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import {getSalt, getHash, getId} from './hash_utils.mjs'
+import { fileURLToPath } from 'url';
 import path from 'path';
 
 const PORT=3000;
 const UserData=mongoose.model('UserData');
 const FileStruct=mongoose.model('FileStruct');
-const __dirname = new URL('.', import.meta.url).pathname;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function newUser(username, password){
 	const salt=getSalt();
@@ -47,6 +49,7 @@ async function deleteFile(username, fileId){
 // ========= Server =========
 
 const app = express();
+//#build
 //#build
 
 const sessionOptions={
