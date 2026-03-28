@@ -1,8 +1,12 @@
 <template>
 <div>
-  &gt;{{node.data.filename}}
-  <span class="clickable" @click="emit('newFile', node.data.fileId)">new</span>
-  <span class="clickable" @click="emit('deleteFile', node.data.fileId)">delete</span>
+  &gt;
+  <span contenteditable="true" @keydown.enter.prevent="renameFile($event, node.data.fileId)">
+  {{node.data.filename}}
+  </span>
+  <span class="clickable" @click="newFile(node.data.fileId)">new</span>
+  <span class="clickable" @click="deleteFile(node.data.fileId)">delete</span>
+  <span class="clickable" @click="editFile(node.data.fileId)">edit</span>
   <div class="nodeContainer">
     <fileNode v-for="file in node.children" :key="file.data.fileId" :node="file"
       @newFile="newFile"
@@ -14,6 +18,10 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+import edit from './edit.vue'
+const router = useRouter();
+
 defineProps({
   node: Object
 })
@@ -25,8 +33,11 @@ function newFile(fileId){
 function deleteFile(fileId){
     emit('deleteFile', fileId);
 }
-function renameFile(event, fileId, filename){
-    emit('renameFile', event, fileId, filename);
+function renameFile(event, fileId){
+    emit('renameFile', event, fileId);
+}
+function editFile(fileId){
+  router.push({path: '/edit', query: {fileId}});
 }
 </script>
 

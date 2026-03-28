@@ -10,6 +10,7 @@ import path from 'path';
 const PORT=3000;
 const UserData=mongoose.model('UserData');
 const FileStruct=mongoose.model('FileStruct');
+const FileContent=mongoose.model('FileContent');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -30,7 +31,10 @@ async function newFile(username, filename, parentId){
 }
 
 async function renameFile(username, fileId, newName){
-	await FileStruct.updateOne({username, fileId}, {$set: {filename: newName}});
+	let structUpdate = FileStruct.updateOne({username, fileId}, {$set: {filename: newName}});
+	let contentUpdate = FileContent.updateOne({username, fileId}, {$set: {filename: newName}});
+	await structUpdate;
+	await contentUpdate;
 }
 
 async function deleteFile(username, fileId){
@@ -44,6 +48,10 @@ async function deleteFile(username, fileId){
 	}, [])
 	for(const child of childrenProcesses)
 		await child;
+}
+
+async function saveFile(username, fileId, content){
+	await FileContent.updateOne({username, fileId}, {$set: {content}})//.then(res=>{console.log(res)});
 }
 
 // ========= Server =========
@@ -88,6 +96,28 @@ app.get('/api/home', async function(req, res){
 	res.json({username: req.session.username, files: foundFiles});
 });
 
+// params: fileId
+// returns: FileContent struct with another member variable [err]
+app.get('/api/edit', async function(req, res){
+	let fileContent=await FileContent.findOne({username: req.session.username, fileId: req.query.fileId});
+	if(fileContent===null){
+		//TODO: create a new file
+		let fileStruct=await FileStruct.findOne({username: req.session.username, fileId: req.query.fileId});
+		if(!fileStruct){
+			console.log(`fileStruct undefined. username=${req.session.username}, fileId=${req.query.fileId}`);
+		}
+		fileContent=new FileContent({
+			username: req.session.username,
+			fileId: req.query.fileId,
+			filename: fileStruct.filename,
+			parentId: fileStruct.parentId,
+			content: ""
+		});
+		fileContent.save();
+	}
+	res.json(fileContent);
+});
+
 // params: username, filename, [parentId]
 // returns: none
 app.post('/api/newFile', async function(req, res){
@@ -106,6 +136,13 @@ app.post('/api/deleteFile', async function(req, res){
 // returns: none
 app.post('/api/renameFile', async function(req, res){
 	await renameFile(req.body.username, req.body.fileId, req.body.filename);
+	res.send();
+});
+
+// params: fileId, content
+// returns: none
+app.post('/api/saveFile', function(req, res){
+	saveFile(req.session.username, req.body.fileId, req.body.content);
 	res.send();
 });
 

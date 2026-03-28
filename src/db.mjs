@@ -22,3 +22,12 @@ mongoose.model('FileStruct', new mongoose.Schema({
 	fileId: String,
 	parentId: String,
 }))
+
+// stores each file's content
+mongoose.model('FileContent', new mongoose.Schema({
+	username: String,
+	filename: String,
+	fileId: String,
+	parentId: String,
+	content: String
+}));

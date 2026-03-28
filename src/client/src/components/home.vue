@@ -8,14 +8,6 @@
   </div>
 </div>
 <h1>Files</h1>
-<div class="file" v-for="file in user.files" :key="file">
-  <span contenteditable="true" @keydown.enter.prevent="renameFile($event, file.fileId)">
-    {{file.filename}}
-  </span>
-  <span class="clickable" @click="newFile(file.fileId)">new</span>
-  <span class="clickable" @click="deleteFile(file.fileId)">delete</span>
-</div>
------
 <div style="width: 50vw; text-align: left; margin: 10px auto;">
   <fileNode v-for="file in fileTree.children" :key="file.data.fileId" 
     :node="file" @newFile="newFile" @deleteFile="deleteFile"
@@ -87,24 +79,6 @@ reloadPage();
 </script>
 
 <style>
-.menu{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 20vw;
-}
-.menuitem{
-    border: 2px solid black;
-    padding: 5px;
-    margin: 5px auto 5px auto;
-}
-.clickable{
-    cursor: pointer;
-    background-color: white;
-}
-.clickable:hover{
-    background-color: #ddd;
-}
 .dir{
 
 }
