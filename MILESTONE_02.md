@@ -5,7 +5,7 @@ Repository Link
 ---
 https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Sapiens-wx.git
 
-Special Instructions for Using Form (or Login details if auth is part of your project)
+Special Instructions for Using Form
 ---
 1. Goto `https://final-project-sapiens-wx.onrender.com/`. This is the login form.
     - The `username` and `password` field accepts any string as a valid username or password.
@@ -20,7 +20,7 @@ Special Instructions for Using Form (or Login details if auth is part of your pr
 URL for form 
 ---
 I am using the Vue.js framework, so you cannot actually goto a page to see the result of the form, since Vue is an SPA.
-**All the below url starts with `https://final-project-sapiens-wx.onrender.com`**
+<br>**All the below url starts with `https://final-project-sapiens-wx.onrender.com`**
 - /api/login
 - /api/newFile
 - /api/deleteFile
@@ -29,7 +29,7 @@ I am using the Vue.js framework, so you cannot actually goto a page to see the r
 
 URL to github that shows line of code where research topic(s) are used / implemented
 --- 
-- [authentication](src/app.mjs) (src/app.mjs:74 app.post('/api/long'))
+- [authentication](src/app.mjs) (src/app.mjs:74 app.post('/api/login'))
 - [Vue.js framework](src/client)
 
 References 
