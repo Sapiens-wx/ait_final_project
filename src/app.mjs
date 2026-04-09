@@ -146,7 +146,7 @@ app.post('/api/saveFile', function(req, res){
 	res.send();
 });
 
-// params: pattern
+// params: pattern, flags (supports 'r' and 'i')
 // returns: an Array of FileStruct
 app.get('/api/search', async function(req, res){
 	const username=req.session.username;
