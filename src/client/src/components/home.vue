@@ -6,6 +6,9 @@
   <div class="menuitem clickable" @click="newFile(undefined)">
     Create File
   </div>
+  <div class="menuitem clickable" @click="toPage('/search')">
+    Search
+  </div>
 </div>
 <h1>Files</h1>
 <div style="width: 50vw; text-align: left; margin: 10px auto;">
@@ -21,6 +24,7 @@
 <script setup>
 import fileNode from './fileNode.vue';
 import contextMenu from './contextMenu.vue';
+import search from './search.vue';
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -82,6 +86,10 @@ function deleteFile(fileId){
 
 function editFile(fileId){
   router.push({path: '/edit', query: {fileId}});
+}
+
+function toPage(page){
+  router.push(page);
 }
 
 reloadPage();

@@ -146,5 +146,43 @@ app.post('/api/saveFile', function(req, res){
 	res.send();
 });
 
+// params: pattern
+// returns: an Array of FileStruct
+app.get('/api/search', async function(req, res){
+	const username=req.session.username;
+	const pattern=req.query.pattern;
+	const flags=req.query.flags;
+
+	const files = await FileStruct.find(buildQuery(pattern, flags));
+	res.json(files);
+
+	function buildQuery(pattern, flags) {
+		const useRegex = flags.includes('r');
+		const ignoreCase = flags.includes('i');
+
+		if (!useRegex) {
+			// 普通 contains（不使用 regex）
+			function escapeRegex(str) {
+				return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+			}
+			return {
+			username,
+			filename: { $regex: escapeRegex(pattern) }
+			};
+		}
+
+		// regex 模式
+		const options = ignoreCase ? "i" : "";
+
+		return {
+			username,
+			filename: {
+			$regex: pattern,
+			$options: options
+			}
+		};
+	}
+});
+
 app.listen(process.env.PORT??3000);
 console.log('listening on port', process.env.PORT);
