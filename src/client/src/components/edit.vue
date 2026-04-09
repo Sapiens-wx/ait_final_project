@@ -6,15 +6,21 @@
   <div class="menuitem clickable" @click="saveFile">
     Save File
   </div>
+  <div class="menuitem clickable" @click="toHome">
+    Home
+  </div>
 </div>
 <h1>{{file.filename}}</h1>
 <div id="content" v-html="file.content" contenteditable="true"></div>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import {ref} from 'vue';
 import axios from 'axios';
+import home from './home.vue';
+
+const router = useRouter();
 
 const route = useRoute();
 // FileContent struct
@@ -26,5 +32,9 @@ axios.get(`/api/edit?fileId=${route.query.fileId}`).then(res=>{
 
 function saveFile(){
     axios.post('/api/saveFile', {fileId: file.value.fileId, content: document.getElementById("content").innerHTML});
+}
+
+function toHome(){
+  router.push('/home');
 }
 </script>
