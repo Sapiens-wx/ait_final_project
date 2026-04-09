@@ -13,13 +13,14 @@
         <label><input type="checkbox" v-model="ignoreCase"></input>ignore case</label>
         <label><input type="checkbox" v-model="useRegex"></input>regex</label>
     </div>
-    <input type="text" placeholder="filename or content" v-model="pattern" @keydown.enter.prevent="search"></input>
+    <input type="text" placeholder="filename" v-model="pattern" @keydown.enter.prevent="search"></input>
     <button @click="search">Search</button>
 </div>
 <div class="files-display">
     <p class="file" v-for="file in files" @click="editFile(file.fileId)">
     {{file.filename}}
     </p>
+    <p v-if="files.length===0">no results found</p>
 </div>
 </template>
 

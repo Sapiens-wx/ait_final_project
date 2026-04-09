@@ -38,3 +38,14 @@ function toHome(){
   router.push('/home');
 }
 </script>
+
+<style>
+#content{
+  width: 55vw;
+  margin: 0px auto;
+  text-align: left;
+}
+#content:focus{
+  outline: none;
+}
+</style>
