@@ -39,7 +39,10 @@ function handleLogin(){
         axios.post('/api/login', {username: username.value, password: password.value}).then(res=>{
             if(res.data.err)
                 errmsg.value=res.data.err;
-            else{
+            else if(username.value==='admin'){
+                errmsg.value="";
+                router.push('/admin');
+            } else{
                 errmsg.value="";
                 router.push('/home');
             }

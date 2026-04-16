@@ -184,5 +184,27 @@ app.get('/api/search', async function(req, res){
 	}
 });
 
+// returns: an Array of UserData
+app.get('/api/admin', async function(req, res){
+	const username=req.session.username;
+	if(username==='admin'){
+		const users=await UserData.find({username: {$ne: 'admin'}});
+		res.json(users);
+	} else{
+		res.send();
+	}
+});
+
+// params: UserData
+app.post('/api/admin/delete', async function(req, res){
+	if(req.session.username==='admin'){
+		const files=await FileStruct.find();
+		let res=await FileContent.deleteMany({username: req.body.user.username});
+		res=await FileStruct.deleteMany({username: req.body.user.username});
+		res=await UserData.deleteOne({username: req.body.user.username});
+	}
+	res.send();
+})
+
 app.listen(process.env.PORT??3000);
 console.log('listening on port', process.env.PORT);
