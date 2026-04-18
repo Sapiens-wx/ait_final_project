@@ -9,6 +9,9 @@
   <div class="menuitem clickable" @click="toPage('/search')">
     Search
   </div>
+  <div class="menuitem clickable" @click="toPage('/login')">
+    Logout
+  </div>
 </div>
 <h1>Files</h1>
 <div style="width: 50vw; text-align: left; margin: 10px auto;">
@@ -25,6 +28,7 @@
 import fileNode from './fileNode.vue';
 import contextMenu from './contextMenu.vue';
 import search from './search.vue';
+import login from './login.vue';
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
