@@ -3,7 +3,7 @@
     <h2>Login / Sign Up</h2>
     <form @submit.prevent="handleLogin">
       <div><label>username<input type="text" v-model="username"></input></label></div>
-      <div><label>password<input type="text" v-model="password"></input></label></div>
+      <div><label>password<input type="password" v-model="password"></input></label></div>
       <div><button>login/signup</button></div>
     </form>
     <p class="errmsg" v-if="errmsg">{{errmsg}}</p>
